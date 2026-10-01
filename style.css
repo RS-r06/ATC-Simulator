@@ -1,0 +1,168 @@
+:root {
+  --bg: #0b100e;
+  --panel: #121a17;
+  --line: #24332d;
+  --text: #d6e4dc;
+  --muted: #84978d;
+  --accent: #4fd18b;
+  --arrival: #5cc8ff;
+  --departure: #ffc857;
+  --danger: #ff5a5a;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  height: 100vh;
+}
+
+.scope {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid var(--line);
+}
+
+#radar {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: block;
+  cursor: crosshair;
+}
+
+.command {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px 4px;
+}
+
+.command input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  background: #07100c;
+  color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 16px var(--mono);
+  text-transform: uppercase;
+}
+
+.command input::placeholder { color: var(--muted); text-transform: none; }
+.command input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+button {
+  padding: 8px 12px;
+  background: #1b2722;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+button[aria-pressed="true"] { background: var(--accent); color: #062012; border-color: var(--accent); }
+
+.feedback {
+  min-height: 1.5em;
+  margin: 0;
+  padding: 0 12px 10px;
+  font-family: var(--mono);
+  color: var(--muted);
+}
+
+.feedback.error { color: var(--danger); }
+.feedback.ok { color: var(--accent); }
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--panel);
+}
+
+.bar { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+h1 { margin: 0 0 10px; font-size: 18px; }
+h2 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.airport { font: 13px var(--mono); color: var(--muted); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 6px; }
+.rate { display: flex; gap: 2px; }
+.rate button { padding: 8px 10px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 0;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stats div { text-align: center; }
+.stats dt { font-size: 11px; color: var(--muted); }
+.stats dd { margin: 0; font: 600 18px var(--mono); }
+
+.help { padding: 10px 14px; border-bottom: 1px solid var(--line); overflow: auto; max-height: 50vh; }
+.help p { margin: 0 0 8px; }
+.help table { border-collapse: collapse; margin-bottom: 8px; }
+.help td { padding: 2px 8px 2px 0; vertical-align: top; }
+code { font-family: var(--mono); color: var(--accent); }
+
+.strips { padding: 10px 14px; border-bottom: 1px solid var(--line); overflow: auto; flex: 1 1 40%; min-height: 0; }
+.strips ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+
+.strip {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 8px;
+  width: 100%;
+  padding: 6px 8px;
+  text-align: left;
+  font: 13px var(--mono);
+  border-left: 4px solid var(--arrival);
+}
+
+.strip.departure { border-left-color: var(--departure); }
+.strip.conflict { border-color: var(--danger); }
+.strip.selected { background: #26362f; border-top-color: var(--text); border-right-color: var(--text); border-bottom-color: var(--text); }
+.strip .sub { grid-column: 1 / -1; color: var(--muted); }
+
+.log { padding: 10px 14px; overflow: auto; flex: 1 1 40%; min-height: 0; }
+.log ol { list-style: none; margin: 0; padding: 0; font: 12px var(--mono); }
+.log li { padding: 2px 0; color: var(--muted); }
+.log li.readback { color: var(--text); }
+.log li.good { color: var(--accent); }
+.log li.bad, .log li.error { color: var(--danger); }
+.log time { color: #5b6b63; margin-right: 6px; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; height: auto; }
+  .scope { height: 100vw; max-height: 80vh; border-right: 0; }
+  .stats { grid-template-columns: repeat(3, 1fr); row-gap: 6px; }
+  .strips, .log { max-height: 40vh; }
+}

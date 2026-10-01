@@ -1,0 +1,12 @@
+{
+  "name": "atc-simulator",
+  "version": "1.0.0",
+  "description": "Radar air traffic control game in plain JavaScript",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "start": "python -m http.server 8080"
+  },
+  "license": "MIT"
+}

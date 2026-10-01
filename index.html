@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ATC Simulator</title>
+    <meta name="description" content="Radar air traffic control game in the browser. Vector arrivals onto the ILS and send departures out by their exit fix." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <section class="scope" aria-label="Radar">
+        <canvas id="radar" aria-label="Radar display of the sector"></canvas>
+        <form id="command-form" class="command" autocomplete="off">
+          <label for="command" class="visually-hidden">Instruction</label>
+          <input id="command" name="command" spellcheck="false" placeholder="Click an aircraft, then type e.g. H270 A40 S210 ILS" />
+          <button type="submit">Send</button>
+        </form>
+        <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+      </section>
+
+      <aside class="panel">
+        <header class="bar">
+          <h1>ATC Simulator <span class="airport">XMPL</span></h1>
+          <div class="controls">
+            <button id="pause" type="button">Pause</button>
+            <div class="rate" role="group" aria-label="Game speed">
+              <button type="button" data-rate="1" aria-pressed="true">1x</button>
+              <button type="button" data-rate="2" aria-pressed="false">2x</button>
+              <button type="button" data-rate="4" aria-pressed="false">4x</button>
+            </div>
+            <button id="restart" type="button">New game</button>
+            <button id="help-toggle" type="button" aria-expanded="false" aria-controls="help">Help</button>
+          </div>
+        </header>
+
+        <dl class="stats">
+          <div><dt>Score</dt><dd id="score">0</dd></div>
+          <div><dt>Time</dt><dd id="clock">00:00</dd></div>
+          <div><dt>Landed</dt><dd id="landed">0</dd></div>
+          <div><dt>Handed off</dt><dd id="handed">0</dd></div>
+          <div><dt>Conflicts</dt><dd id="conflicts">0</dd></div>
+        </dl>
+
+        <section id="help" class="help" hidden>
+          <h2>How to play</h2>
+          <p>You are the radar controller for Example Airport. Land every arrival on
+          runway 27 and send every departure out of the sector by its exit fix, above
+          5000 ft. Keep aircraft 3 nm or 1000 ft apart.</p>
+          <p>Click an aircraft to select it, then type instructions and press Enter.
+          You can give several at once: <code>H180 A40 S210</code>.</p>
+          <table>
+            <tr><td><code>H270</code></td><td>fly heading 270</td></tr>
+            <tr><td><code>L090</code> <code>R090</code></td><td>turn left or right onto 090</td></tr>
+            <tr><td><code>A40</code></td><td>climb or descend to 4000 ft (2000 to 15000)</td></tr>
+            <tr><td><code>S210</code></td><td>speed 210 kt</td></tr>
+            <tr><td><code>D KILNO</code></td><td>fly direct to a fix</td></tr>
+            <tr><td><code>ILS</code></td><td>cleared for the ILS approach to runway 27</td></tr>
+            <tr><td><code>T</code></td><td>cleared for takeoff (departures at the runway)</td></tr>
+          </table>
+          <p>To land, the easy way: <code>D KILNO A30 ILS</code>. The arrival flies
+          to KILNO, turns onto the dashed centre line and descends by itself. The
+          quick way: give it a heading that cuts the centre line 10 to 15 nm out, at
+          3000 to 4000 ft, and clear it for the ILS. It turns in when it reaches the
+          line.</p>
+          <p>Points: landing +10, hand-off +10, wrong exit -5, go-around -5,
+          arrival lost -10, loss of separation -20.</p>
+        </section>
+
+        <section class="strips" aria-label="Flight strips">
+          <h2>Traffic</h2>
+          <ul id="strips"></ul>
+        </section>
+
+        <section class="log" aria-label="Radio log">
+          <h2>Radio</h2>
+          <ol id="log"></ol>
+        </section>
+      </aside>
+    </main>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
