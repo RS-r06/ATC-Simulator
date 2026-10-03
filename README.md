@@ -11,8 +11,6 @@ every aircraft 3 nm or 1000 ft from every other.
 as a learning project. Claude wrote the first version of the code, tests and
 this README.
 
-![Radar screen with five arrivals inbound and four departures waiting](docs/screenshot.png)
-
 ## Who it is for
 
 Anyone curious about what a radar controller does, and students who want to
@@ -36,6 +34,24 @@ To run the tests (Node 18 or later, nothing to install):
 ```bash
 npm test
 ```
+
+## Screenshots
+
+Seven minutes in: five arrivals inbound with their data blocks (callsign,
+altitude in hundreds of feet, speed in tens of knots) and four departures
+waiting at the runway.
+
+![Radar screen with five arrivals inbound and four departures waiting](docs/screenshot.png)
+
+SAA765, selected in white, swinging onto the final approach at KILNO after
+`D KILNO A30 S210 ILS`. The arrivals left alone are streaming into the middle
+of the sector.
+
+![SAA765 turning onto the final approach while other arrivals converge](docs/approach.png)
+
+The help panel open, with SAA765's landing in the radio log.
+
+![Help panel and radio log showing SAA765 landed](docs/help.png)
 
 ## How to play
 
